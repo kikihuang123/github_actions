@@ -1,8 +1,8 @@
 name: Multiple shells commands
+
 on:
   push:
-    branches:
-      - "main"
+    branches: ["main"]      # 如果預設分支是 master，就改成 ["master"]
   pull_request:
     types: [closed, assigned, opened, reopened]
 
@@ -18,14 +18,14 @@ jobs:
 
   run-windows-command:
     runs-on: windows-latest
-    needs: ["run-shell-command"]
+    needs: ["run-shell-command"]   # 讓它在上個 job 成功後才跑
     steps:
       - name: current directory with powershell
-        run: Get-Location
+        run: Get-Location           # Windows 預設 shell 是 PowerShell
 
       - name: current directory with bash
         run: pwd
-        shell: bash
+        shell: bash                 # 這一步要指定用 bash
 
       - name: print some default env variables
         run: |
@@ -37,4 +37,5 @@ jobs:
           echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
           echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
           echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+          echo "GITHUB_SHA: ${GITHUB_SHA}"
         shell: bash
